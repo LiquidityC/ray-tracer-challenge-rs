@@ -1,9 +1,5 @@
-pub fn epsilon_eq(a: f64 , b: f64) -> bool {
-    if (a-b).abs() < std::f64::EPSILON {
-        true
-    } else {
-        false
-    }
+pub fn epsilon_eq(a: f64, b: f64) -> bool {
+    (a - b).abs() < std::f64::EPSILON
 }
 
 #[cfg(test)]
@@ -17,6 +13,6 @@ mod test {
 
     #[test]
     fn espilon_compare() {
-        assert!(epsilon_eq(0.1f64+0.2f64, 0.3f64));
+        assert!(epsilon_eq(0.1f64 + 0.2f64, 0.3f64));
     }
 }
