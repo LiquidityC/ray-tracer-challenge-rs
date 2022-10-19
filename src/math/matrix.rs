@@ -110,6 +110,8 @@ impl Matrix {
     }
 
     pub fn inverse(&self) -> Self {
+        assert!(self.invertible());
+
         let mut n = Matrix::with_dimension(self.width, self.height);
         for i in 0..self.rows.len() {
             for j in 0..self.rows[i].len() {
