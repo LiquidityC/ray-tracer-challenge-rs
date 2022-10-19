@@ -1,6 +1,8 @@
 use crate::math::util::epsilon_eq as feq;
 use std::ops::{Deref, DerefMut, Mul};
 
+use super::Tuple;
+
 #[allow(dead_code)]
 #[derive(Debug, Clone)]
 pub struct Matrix {
@@ -76,8 +78,22 @@ impl Mul for Matrix {
     }
 }
 
+impl Mul<Tuple> for Matrix {
+    type Output = Tuple;
+
+    fn mul(self, v: Tuple) -> Self::Output {
+        let mut result: Vec<f64> = vec![0.0; self.height];
+        for (i, row) in self.rows.iter().enumerate() {
+            result[i] = row.iter().zip(v.iter()).map(|(a, b)| a * b).sum::<f64>();
+        }
+        Tuple::from(result)
+    }
+}
+
 #[cfg(test)]
 mod test {
+    use crate::math::Tuple;
+
     use super::Matrix;
 
     #[test]
@@ -157,5 +173,18 @@ mod test {
         ]);
         let result = a * b;
         assert_eq!(result, target);
+    }
+
+    #[test]
+    fn vector_multiplication() {
+        let m = Matrix::new(vec![
+            vec![2.0, -1.0, 3.0, 5.0],
+            vec![1.0, 3.0, 0.0, 4.0],
+            vec![3.0, 0.0, -1.0, -2.0],
+            vec![0.0, 0.0, 0.0, 1.0],
+        ]);
+        let v = Tuple::from(&[2, 0, -1, 1]);
+        let r = Tuple::from(&[6, 6, 5, 1]);
+        assert_eq!(m * v, r);
     }
 }

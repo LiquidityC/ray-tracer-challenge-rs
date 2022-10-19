@@ -19,7 +19,13 @@ struct Environment {
 
 impl fmt::Display for Projectile {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{:.2} {:.2} {:.2}", self.pos.0, self.pos.1, self.pos.2)
+        write!(
+            f,
+            "{:.2} {:.2} {:.2}",
+            self.pos.x(),
+            self.pos.y(),
+            self.pos.z()
+        )
     }
 }
 
@@ -44,7 +50,7 @@ fn main() {
     loop {
         p.pos = p.pos + p.vel;
         p.vel = p.vel + env.grav + env.wind;
-        if p.pos.1 <= 0.0 {
+        if p.pos.y() <= 0.0 {
             break;
         }
         canvas.set_pixel(
