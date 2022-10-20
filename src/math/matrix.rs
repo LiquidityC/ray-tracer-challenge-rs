@@ -1,7 +1,7 @@
 use crate::math::util::epsilon_eq as feq;
 use std::ops::{Deref, DerefMut, Mul};
 
-use super::Tuple;
+use super::{round, Tuple};
 
 #[allow(dead_code)]
 #[derive(Debug, Clone)]
@@ -128,10 +128,10 @@ impl Matrix {
 
     pub fn round(&self, decimal_count: u32) -> Self {
         let mut clone = self.clone();
-        clone.iter_mut().flatten().for_each(|v| {
-            let y = 10i32.pow(decimal_count) as f64;
-            *v = (*v * y).round() / y;
-        });
+        clone
+            .iter_mut()
+            .flatten()
+            .for_each(|v| *v = round(*v, decimal_count));
         clone
     }
 }
